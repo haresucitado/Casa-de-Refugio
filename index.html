@@ -132,18 +132,28 @@
         /* Línea vertical central */
         #timeline-line {
             position: absolute;
-            left: 50%;
+            /* AJUSTE CLAVE: Mover la línea a la izquierda para móvil */
+            left: 10%; 
             width: 2px;
             background-color: #333; /* Color de la línea de fondo */
             height: 100%;
             transform: translateX(-50%);
             z-index: 0;
         }
+        
+        /* AJUSTE: Regresar la línea al centro en pantallas medianas (md) */
+        @media (min-width: 768px) {
+            #timeline-line {
+                left: 50%;
+            }
+        }
+
 
         /* Indicador de posición (puntito de color) */
         #timeline-indicator {
             position: absolute;
-            left: 50%;
+            /* AJUSTE CLAVE: Mover el indicador a la izquierda para móvil */
+            left: 10%; 
             top: 0; /* Empieza arriba */
             width: 12px;
             height: 12px;
@@ -154,6 +164,14 @@
             transition: top 0.3s ease-out; /* Transición suave al moverse */
             box-shadow: 0 0 15px #F27A3A;
         }
+        
+        /* AJUSTE: Regresar el indicador al centro en pantallas medianas (md) */
+        @media (min-width: 768px) {
+            #timeline-indicator {
+                left: 50%;
+            }
+        }
+
 
         /* Contenedor de cada ítem de historia */
         .timeline-item {
@@ -166,7 +184,8 @@
         .timeline-dot {
             position: absolute;
             top: 50%;
-            left: 50%;
+            /* AJUSTE CLAVE: Mover el punto a la izquierda para móvil */
+            left: 10%;
             width: 16px;
             height: 16px;
             background-color: #FFB380; /* Punto ligeramente más claro */
@@ -175,6 +194,14 @@
             transform: translate(-50%, -50%);
             z-index: 10;
         }
+        
+        /* AJUSTE: Regresar el punto al centro en pantallas medianas (md) */
+        @media (min-width: 768px) {
+             .timeline-dot {
+                left: 50%;
+            }
+        }
+
 
         /* Tarjeta de contenido (alternando izquierda/derecha) */
         .timeline-content-card {
@@ -202,49 +229,48 @@
 
     <div class="min-h-screen text-white">
         <header class="bg-[#1a1a1a] p-4 shadow-xl border-b border-[#333]">
-            <div class="container mx-auto flex justify-between items-center">
-                <h1 class="text-3xl font-extrabold light-glow-text">
+            <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
+                <h1 class="text-3xl font-extrabold light-glow-text text-center sm:text-left">
                     <i data-lucide="radio" class="inline-block mr-2 w-6 h-6"></i> 
-                    <span class="hidden sm:inline">Radio Iglesia</span> Comunidad
+                    <span class="inline">Radio Iglesia</span> Comunidad
                 </h1>
-                <div class="flex space-x-4 items-center">
+                
+                <div class="flex flex-wrap justify-center sm:justify-end gap-2 items-center">
                     
-                    <!-- NUEVO BOTÓN: Nuestra Historia -->
-                    <button id="show-history-button" class="p-2 px-4 rounded-full bg-[#F27A3A] hover:bg-[#FFB380] text-[#1a1a1a] font-semibold transition" title="Nuestra Historia">
-                        <i data-lucide="scroll" class="inline-block mr-2 w-5 h-5"></i> 
-                        <span class="hidden md:inline">Historia</span>
+                    <button id="show-history-button" class="p-2 px-4 rounded-full bg-[#F27A3A] hover:bg-[#FFB380] text-[#1a1a1a] font-semibold transition text-sm" title="Nuestra Historia">
+                        <i data-lucide="scroll" class="inline-block mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5"></i> 
+                        <span class="inline">Historia</span>
                     </button>
                     
-                    <!-- Redes Sociales (sin modificar) -->
                     <a id="link-facebook" href="https://facebook.com/tu-pagina" target="_blank" title="Facebook">
                         <button class="p-2 rounded-full bg-[#333] hover:accent-color transition">
-                            <i data-lucide="facebook" class="w-6 h-6 text-white"></i>
+                            <i data-lucide="facebook" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
                         </button>
                     </a>
                     
                     <a id="link-instagram" href="https://instagram.com/tu-usuario" target="_blank" title="Instagram">
                         <button class="p-2 rounded-full bg-[#333] hover:accent-color transition">
-                            <i data-lucide="instagram" class="w-6 h-6 text-white"></i>
+                            <i data-lucide="instagram" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
                         </button>
                     </a>
                     
                     <a id="link-youtube" href="https://youtube.com/tu-canal" target="_blank" title="YouTube">
                         <button class="p-2 rounded-full bg-[#333] hover:accent-color transition">
-                            <i data-lucide="youtube" class="w-6 h-6 text-white"></i>
+                            <i data-lucide="youtube" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
                         </button>
                     </a>
                     
                     <a id="link-twitch" href="https://twitch.tv/tu-canal" target="_blank" title="Twitch">
                         <button class="p-2 rounded-full bg-[#333] hover:accent-color transition">
-                            <i data-lucide="twitch" class="w-6 h-6 text-white"></i>
+                            <i data-lucide="twitch" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
                         </button>
                     </a>
 
                     <button id="lang-toggle" class="p-2 rounded-full bg-[#333] hover:accent-color transition" title="Cambiar Idioma">
-                        <i data-lucide="languages" class="w-6 h-6 text-white"></i>
+                        <i data-lucide="languages" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
                     </button>
                     
-                    <span id="status-message" class="text-sm font-medium"></span>
+                    <span id="status-message" class="text-xs font-medium hidden sm:inline-block"></span>
                 </div>
             </div>
         </header>
@@ -259,7 +285,7 @@
                 <div class="bg-[#1a1a1a] p-2 md:p-4 rounded-xl warm-glow border border-[#333]">
                     <div class="twitch-container">
                         <iframe 
-                             src="https://player.twitch.tv/?channel=radioharesucitado&parent=haresucitado.github.io&muted=false&autoplay=true" 
+                            src="https://player.twitch.tv/?channel=gemini&parent=localhost&muted=false&autoplay=true&volume=0.5" 
                             title="Twitch Live Stream"
                             allowfullscreen 
                             loading="lazy">
@@ -272,7 +298,7 @@
             <section id="ministries-section" class="mb-12">
                 <h2 id="ministries-section-title" class="text-3xl md:text-4xl font-bold mb-8 text-center light-glow-text">Nuestros Ministerios</h2>
                 
-                <div id="ministries-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div id="ministries-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                     </div>
             </section>
             
@@ -287,7 +313,6 @@
         </main>
     </div>
 
-    <!-- MODALES EXISTENTES (SIN MODIFICAR) -->
     <div id="ministryDetailModal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden"
          onclick="this.classList.add('hidden')">
         <div id="ministryDetailContent" class="w-full max-w-lg" onclick="event.stopPropagation()">
@@ -310,20 +335,16 @@
         </button>
     </div>
 
-    <!-- NUEVO MODAL: Nuestra Historia Timeline (MODIFICACIÓN AQUÍ) -->
-    <!-- Se eliminó bg-opacity-70 del backdrop para que el modal se vea claro al abrir -->
     <div id="historyModal" class="modal-backdrop fixed inset-0 bg-black flex items-center justify-center p-4 z-50 hidden"
          onclick="this.classList.add('hidden')">
-        <div class="w-full h-full max-w-4xl max-h-[90vh] bg-[#0d0d0d] p-6 rounded-xl shadow-2xl warm-glow border border-[#333]" onclick="event.stopPropagation()">
-            <h3 id="history-modal-title" class="text-3xl font-bold text-center mb-6 light-glow-text sticky top-0 bg-[#0d0d0d] z-30 py-2">Nuestra Historia de Fe</h3>
+        <div class="w-full h-full max-w-4xl max-h-[90vh] bg-[#0d0d0d] p-4 sm:p-6 rounded-xl shadow-2xl warm-glow border border-[#333]" onclick="event.stopPropagation()">
+            <h3 id="history-modal-title" class="text-2xl sm:text-3xl font-bold text-center mb-4 light-glow-text sticky top-0 bg-[#0d0d0d] z-30 py-2">Nuestra Historia de Fe</h3>
             
             <div id="historyTimeline" class="relative">
-                <!-- Línea de tiempo vertical y el punto indicador (se moverá con JS) -->
                 <div id="timeline-line"></div>
                 <div id="timeline-indicator"></div>
                 
-                <!-- Contenido de la Historia (Generado por JS) -->
-            </div>
+                </div>
         </div>
         
         <button onclick="document.getElementById('historyModal').classList.add('hidden')"
@@ -595,16 +616,17 @@
             CHURCH_HISTORY.forEach((item, index) => {
                 // Alternar la posición del contenido a izquierda (par) o derecha (impar)
                 const isLeft = index % 2 === 0;
+                // AJUSTE CLAVE: Usar la columna 3 en móvil (col-start-3) para dejar espacio a la izquierda para la línea.
+                // En md (desktop), se alterna entre col-start-1 y col-start-8
                 const cardClasses = isLeft 
-                    ? 'md:col-span-4 md:col-start-1 text-right' 
-                    : 'md:col-span-4 md:col-start-8 text-left';
+                    ? 'col-span-10 col-start-3 text-left md:col-span-4 md:col-start-1 md:text-right' 
+                    : 'col-span-10 col-start-3 text-left md:col-span-4 md:col-start-8';
                 
                 // Las clases flex y margin son solo para móvil (centrado)
                 dynamicContent += `
                     <div id="history-item-${item.id}" class="timeline-item grid grid-cols-12 gap-4">
                         
-                        <!-- Contenido (Izquierda o Derecha en Desktop) -->
-                        <div class="${cardClasses} col-span-12 relative">
+                        <div class="${cardClasses} relative">
                             <div class="timeline-content-card transition-all" data-year="${item.year}">
                                 <p class="text-xs font-light text-gray-500">${item.year}</p>
                                 <h4 class="text-xl font-bold light-glow-text mb-2">${item.title}</h4>
@@ -617,8 +639,7 @@
                             </div>
                         </div>
 
-                        <!-- Punto de Separación Central (Visible solo en Desktop) -->
-                        <div class="timeline-dot hidden md:block"></div>
+                        <div class="timeline-dot"></div> 
                     </div>
                 `;
             });
@@ -733,11 +754,11 @@
                         onclick="showEventDetail(${event.id})" role="button" tabindex="0"
                         aria-label="${translatedTitle}">
                         <div class="flex-shrink-0 text-center">
-                            <i data-lucide="calendar" class="w-8 h-8 light-glow-text"></i>
+                            <i data-lucide="calendar" class="w-6 h-6 sm:w-8 sm:h-8 light-glow-text"></i>
                         </div>
                         <div>
-                            <p class="text-lg font-bold text-white">${translatedTitle}</p>
-                            <p class="text-sm text-gray-400">${event.date} - ${event.time}</p>
+                            <p class="text-base sm:text-lg font-bold text-white">${translatedTitle}</p>
+                            <p class="text-xs text-gray-400">${event.date} - ${event.time}</p>
                             <p class="text-xs text-gray-500">${event.location}</p>
                         </div>
                     </div>
@@ -764,7 +785,8 @@
             // 2. Traducción del botón de historia
             const historyButton = document.getElementById('show-history-button');
             if (historyButton) {
-                historyButton.innerHTML = `<i data-lucide="scroll" class="inline-block mr-2 w-5 h-5"></i> <span class="hidden md:inline">${dict.history_button}</span>`;
+                // AJUSTE: Usar span.inline para que el texto se vea siempre en móvil
+                historyButton.innerHTML = `<i data-lucide="scroll" class="inline-block mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5"></i> <span class="inline">${dict.history_button}</span>`;
                 historyButton.setAttribute('title', dict.history_button);
             }
             
@@ -831,4 +853,3 @@
     </script>
 </body>
 </html>
-
