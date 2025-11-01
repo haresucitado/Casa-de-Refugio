@@ -132,28 +132,18 @@
         /* Línea vertical central */
         #timeline-line {
             position: absolute;
-            /* AJUSTE CLAVE: Mover la línea a la izquierda para móvil */
-            left: 10%; 
+            left: 50%;
             width: 2px;
             background-color: #333; /* Color de la línea de fondo */
             height: 100%;
             transform: translateX(-50%);
             z-index: 0;
         }
-        
-        /* AJUSTE: Regresar la línea al centro en pantallas medianas (md) */
-        @media (min-width: 768px) {
-            #timeline-line {
-                left: 50%;
-            }
-        }
-
 
         /* Indicador de posición (puntito de color) */
         #timeline-indicator {
             position: absolute;
-            /* AJUSTE CLAVE: Mover el indicador a la izquierda para móvil */
-            left: 10%; 
+            left: 50%;
             top: 0; /* Empieza arriba */
             width: 12px;
             height: 12px;
@@ -164,14 +154,6 @@
             transition: top 0.3s ease-out; /* Transición suave al moverse */
             box-shadow: 0 0 15px #F27A3A;
         }
-        
-        /* AJUSTE: Regresar el indicador al centro en pantallas medianas (md) */
-        @media (min-width: 768px) {
-            #timeline-indicator {
-                left: 50%;
-            }
-        }
-
 
         /* Contenedor de cada ítem de historia */
         .timeline-item {
@@ -184,8 +166,7 @@
         .timeline-dot {
             position: absolute;
             top: 50%;
-            /* AJUSTE CLAVE: Mover el punto a la izquierda para móvil */
-            left: 10%;
+            left: 50%;
             width: 16px;
             height: 16px;
             background-color: #FFB380; /* Punto ligeramente más claro */
@@ -194,14 +175,6 @@
             transform: translate(-50%, -50%);
             z-index: 10;
         }
-        
-        /* AJUSTE: Regresar el punto al centro en pantallas medianas (md) */
-        @media (min-width: 768px) {
-             .timeline-dot {
-                left: 50%;
-            }
-        }
-
 
         /* Tarjeta de contenido (alternando izquierda/derecha) */
         .timeline-content-card {
@@ -223,54 +196,91 @@
             transition: opacity 0.5s ease-in-out;
         }
         
+        /* --- NUEVOS ESTILOS PARA EL CARRUSEL CONTINUO (MARQUEE) --- */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            /* Mueve el 50% del ancho para el loop continuo, ya que el contenido está duplicado */
+            100% { transform: translateX(-50%); } 
+        }
+        
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 20px 0;
+            display: flex; /* Para asegurar que los dos divs .marquee estén en línea */
+        }
+
+        .marquee {
+            display: inline-block;
+            animation: marquee 60s linear infinite; /* 60 segundos para un giro suave */
+            /* Duplicar el contenido visualmente forzando el ancho al 200% para el loop continuo */
+            width: 200%;
+            flex-shrink: 0;
+        }
+
+        .marquee-image {
+            width: 150px; /* Tamaño fijo para la imagen */
+            height: 100px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin: 0 10px;
+            display: inline-block;
+            border: 2px solid #F27A3A;
+            box-shadow: 0 0 10px rgba(242, 122, 58, 0.5);
+        }
+
+        /* Pausa la animación al hacer hover */
+        .marquee-container:hover .marquee {
+            animation-play-state: paused;
+        }
+        
     </style>
 </head>
 <body>
 
     <div class="min-h-screen text-white">
         <header class="bg-[#1a1a1a] p-4 shadow-xl border-b border-[#333]">
-            <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0">
-                <h1 class="text-3xl font-extrabold light-glow-text text-center sm:text-left">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-3xl font-extrabold light-glow-text">
                     <i data-lucide="radio" class="inline-block mr-2 w-6 h-6"></i> 
-                    <span class="inline">Radio Iglesia</span> Comunidad
+                    <span id="header-title-text"><span class="hidden sm:inline">Radio Iglesia</span> Comunidad</span>
                 </h1>
-                
-                <div class="flex flex-wrap justify-center sm:justify-end gap-2 items-center">
+                <div class="flex space-x-4 items-center">
                     
-                    <button id="show-history-button" class="p-2 px-4 rounded-full bg-[#F27A3A] hover:bg-[#FFB380] text-[#1a1a1a] font-semibold transition text-sm" title="Nuestra Historia">
-                        <i data-lucide="scroll" class="inline-block mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5"></i> 
-                        <span class="inline">Historia</span>
+                    <button id="show-history-button" class="p-2 px-4 rounded-full bg-[#F27A3A] hover:bg-[#FFB380] text-[#1a1a1a] font-semibold transition" title="Nuestra Historia">
+                        <i data-lucide="scroll" class="inline-block mr-2 w-5 h-5"></i> 
+                        <span class="hidden md:inline">Historia</span>
                     </button>
                     
                     <a id="link-facebook" href="https://facebook.com/tu-pagina" target="_blank" title="Facebook">
                         <button class="p-2 rounded-full bg-[#333] hover:accent-color transition">
-                            <i data-lucide="facebook" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
+                            <i data-lucide="facebook" class="w-6 h-6 text-white"></i>
                         </button>
                     </a>
                     
                     <a id="link-instagram" href="https://instagram.com/tu-usuario" target="_blank" title="Instagram">
                         <button class="p-2 rounded-full bg-[#333] hover:accent-color transition">
-                            <i data-lucide="instagram" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
+                            <i data-lucide="instagram" class="w-6 h-6 text-white"></i>
                         </button>
                     </a>
                     
                     <a id="link-youtube" href="https://youtube.com/tu-canal" target="_blank" title="YouTube">
                         <button class="p-2 rounded-full bg-[#333] hover:accent-color transition">
-                            <i data-lucide="youtube" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
+                            <i data-lucide="youtube" class="w-6 h-6 text-white"></i>
                         </button>
                     </a>
                     
                     <a id="link-twitch" href="https://twitch.tv/tu-canal" target="_blank" title="Twitch">
                         <button class="p-2 rounded-full bg-[#333] hover:accent-color transition">
-                            <i data-lucide="twitch" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
+                            <i data-lucide="twitch" class="w-6 h-6 text-white"></i>
                         </button>
                     </a>
 
                     <button id="lang-toggle" class="p-2 rounded-full bg-[#333] hover:accent-color transition" title="Cambiar Idioma">
-                        <i data-lucide="languages" class="w-5 h-5 text-white md:w-6 md:h-6"></i>
+                        <i data-lucide="languages" class="w-6 h-6 text-white"></i>
                     </button>
                     
-                    <span id="status-message" class="text-xs font-medium hidden sm:inline-block"></span>
+                    <span id="status-message" class="text-sm font-medium"></span>
                 </div>
             </div>
         </header>
@@ -295,11 +305,32 @@
                 </div>
             </section>
             
+            <section id="schedule-section" class="mb-12">
+                <h2 id="schedule-section-title" class="text-3xl md:text-4xl font-bold mb-8 text-center light-glow-text">Horarios de Culto y Actividades</h2>
+                <div class="bg-[#1a1a1a] p-4 md:p-8 rounded-xl warm-glow border border-[#333]">
+                    <div id="schedule-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        </div>
+                    <p id="schedule-message" class="text-center mt-6 text-lg font-semibold light-glow-text border-t border-[#333] pt-4">
+                        ¡Te esperamos en la presencia de Dios! Trae a un amigo.
+                    </p>
+                </div>
+            </section>
+            
             <section id="ministries-section" class="mb-12">
                 <h2 id="ministries-section-title" class="text-3xl md:text-4xl font-bold mb-8 text-center light-glow-text">Nuestros Ministerios</h2>
                 
-                <div id="ministries-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div id="ministries-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                     </div>
+            </section>
+            
+            <section id="carousel-section" class="mb-12">
+                <div class="bg-[#1a1a1a] p-4 rounded-xl warm-glow border border-[#333]">
+                    <h3 id="carousel-title" class="text-2xl font-bold mb-4 text-center light-glow-text">Momentos de Comunidad</h3>
+                    <div id="carousel-container" class="marquee-container">
+                        <div id="marquee-content-1" class="marquee"></div>
+                        <div id="marquee-content-2" class="marquee"></div>
+                    </div>
+                </div>
             </section>
             
             <section id="calendar-section" class="mb-12">
@@ -337,8 +368,8 @@
 
     <div id="historyModal" class="modal-backdrop fixed inset-0 bg-black flex items-center justify-center p-4 z-50 hidden"
          onclick="this.classList.add('hidden')">
-        <div class="w-full h-full max-w-4xl max-h-[90vh] bg-[#0d0d0d] p-4 sm:p-6 rounded-xl shadow-2xl warm-glow border border-[#333]" onclick="event.stopPropagation()">
-            <h3 id="history-modal-title" class="text-2xl sm:text-3xl font-bold text-center mb-4 light-glow-text sticky top-0 bg-[#0d0d0d] z-30 py-2">Nuestra Historia de Fe</h3>
+        <div class="w-full h-full max-w-4xl max-h-[90vh] bg-[#0d0d0d] p-6 rounded-xl shadow-2xl warm-glow border border-[#333]" onclick="event.stopPropagation()">
+            <h3 id="history-modal-title" class="text-3xl font-bold text-center mb-6 light-glow-text sticky top-0 bg-[#0d0d0d] z-30 py-2">Nuestra Historia de Fe</h3>
             
             <div id="historyTimeline" class="relative">
                 <div id="timeline-line"></div>
@@ -360,7 +391,7 @@
         // Array para IntersectionObserver
         const historyItems = [];
         
-        // --- DATOS: Ministerios con detalles de contacto (Títulos modificados para traducción) ---
+        // --- DATOS: Ministerios (SIN CAMBIOS) ---
         const MINISTRIES = [
             { id: 'alabanza', icon: 'music', title: { es: 'Ministerio de Alabanza', en: 'Worship Ministry' }, leaderName: 'David & Ana Martínez', cedulaId: 'C-8.765.432 (Referencia)', phone: '+507 6677-8899', contactDirection: 'Zona Central, Templo Principal', photoUrl: 'https://placehold.co/400x400/F27A3A/ffffff?text=Lider+Alabanza' },
             { id: 'misiones', icon: 'globe', title: { es: 'Ministerio de Misiones', en: 'Missions Ministry' }, leaderName: 'Pastor Juan López', cedulaId: 'C-1.234.567 (Referencia)', phone: '+507 6000-1122', contactDirection: 'Enfoque Global, África y Asia', photoUrl: 'https://placehold.co/400x400/F27A3A/ffffff?text=Lider+Misiones' },
@@ -373,7 +404,7 @@
             { id: 'mujeres', icon: 'heart-handshake', title: { es: 'Ministerio de Mujeres (General)', en: 'Women\'s Ministry (General)' }, leaderName: 'Pastora Raquel Díaz', cedulaId: 'C-2.109.876 (Referencia)', phone: '+507 6999-0011', contactDirection: 'Apoyo Familiar y Matrimonial', photoUrl: 'https://placehold.co/400x400/F27A3A/ffffff?text=Lider+Mujeres' },
         ];
         
-        // --- DATOS ACTUALIZADOS: Eventos con nuevos campos (flyerUrl, description, eventLink) ---
+        // --- DATOS: Eventos (SIN CAMBIOS) ---
         const EVENTS = [
             { id: 1, title: { es: 'Vigilia de Oración', en: 'Prayer Vigil' }, date: 'Viernes 10/11', time: '8:00 PM', location: 'Templo Principal', ministryId: 'alabanza', 
               flyerUrl: 'https://placehold.co/600x350/F27A3A/000000?text=Flyer+Vigilia+Oración', 
@@ -396,27 +427,44 @@
               eventLink: 'https://ejemplo.com/jovenes-youtube' },
         ];
         
-        // --- NUEVOS DATOS: Historia de la Iglesia (10 puntos) ---
+        // --- DATOS ACTUALIZADOS: Historia de la Iglesia (10 puntos con traducción) ---
         const CHURCH_HISTORY = [
-            { id: 1, year: '1985', title: 'Fundación y Primer Culto', text: 'La congregación inicia con un pequeño grupo de familias en una casa, sentando las bases de la fe.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=1985+Inicio' },
-            { id: 2, year: '1990', title: 'Construcción del Primer Templo', text: 'Se logra adquirir el primer terreno y se inicia la construcción del templo principal con esfuerzo de la comunidad.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=1990+Templo' },
-            { id: 3, year: '1995', title: 'Apertura de Escuela Dominical', text: 'Se organiza formalmente la Escuela Dominical para la enseñanza bíblica a niños y jóvenes.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=1995+Escuela' },
-            { id: 4, year: '2001', title: 'Lanzamiento de Misiones Globales', text: 'El primer equipo misionero es enviado al extranjero, marcando el inicio de la obra global.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2001+Misiones' },
-            { id: 5, year: '2005', title: 'Expansión de Obra Social', text: 'Se funda el comedor comunitario, alcanzando a más de 500 personas semanalmente.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2005+Social' },
-            { id: 6, year: '2010', title: 'Inauguración del Auditorio Anexo', text: 'Un nuevo espacio dedicado a eventos juveniles y conferencias es completado y dedicado al Señor.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2010+Auditorio' },
-            { id: 7, year: '2015', title: 'Inicio de la Radio Online', text: 'Nace "Radio Iglesia", llevando la Palabra a través de internet por primera vez.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2015+Radio' },
-            { id: 8, year: '2018', title: 'Programas de Discipulado Estructural', text: 'Se implementa un currículo formal de discipulado para la formación de nuevos líderes.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2018+Liderazgo' },
-            { id: 9, year: '2020', title: 'Transición Digital (COVID)', text: 'Durante la pandemia, la iglesia se adapta completamente al formato virtual, incluyendo Twitch.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2020+Digital' },
-            { id: 10, year: '2025', title: 'Celebración de 40 Años y Visión Futura', text: 'Celebramos 40 años de ministerio y se lanza la visión para la siguiente década, enfocada en la juventud.', imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2025+40Años' },
+            { id: 1, year: '1985', title: { es: 'Fundación y Primer Culto', en: 'Founding and First Service' }, text: { es: 'La congregación inicia con un pequeño grupo de familias en una casa, sentando las bases de la fe.', en: 'The congregation started with a small group of families in a house, laying the foundations of faith.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=1985+Inicio' },
+            { id: 2, year: '1990', title: { es: 'Construcción del Primer Templo', en: 'Construction of the First Temple' }, text: { es: 'Se logra adquirir el primer terreno y se inicia la construcción del templo principal con esfuerzo de la comunidad.', en: 'The first plot of land was acquired, and the construction of the main temple began with the community\'s effort.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=1990+Templo' },
+            { id: 3, year: '1995', title: { es: 'Apertura de Escuela Dominical', en: 'Opening of Sunday School' }, text: { es: 'Se organiza formalmente la Escuela Dominical para la enseñanza bíblica a niños y jóvenes.', en: 'Sunday School was formally organized for the biblical teaching of children and youth.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=1995+Escuela' },
+            { id: 4, year: '2001', title: { es: 'Lanzamiento de Misiones Globales', en: 'Launch of Global Missions' }, text: { es: 'El primer equipo misionero es enviado al extranjero, marcando el inicio de la obra global.', en: 'The first missionary team was sent abroad, marking the beginning of the global work.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2001+Misiones' },
+            { id: 5, year: '2005', title: { es: 'Expansión de Obra Social', en: 'Expansion of Social Work' }, text: { es: 'Se funda el comedor comunitario, alcanzando a más de 500 personas semanalmente.', en: 'The community kitchen was founded, reaching over 500 people weekly.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2005+Social' },
+            { id: 6, year: '2010', title: { es: 'Inauguración del Auditorio Anexo', en: 'Inauguration of the Annex Auditorium' }, text: { es: 'Un nuevo espacio dedicado a eventos juveniles y conferencias es completado y dedicado al Señor.', en: 'A new space dedicated to youth events and conferences was completed and dedicated to the Lord.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2010+Auditorio' },
+            { id: 7, year: '2015', title: { es: 'Inicio de la Radio Online', en: 'Start of Online Radio' }, text: { es: 'Nace "Radio Iglesia", llevando la Palabra a través de internet por primera vez.', en: '"Church Radio" was born, bringing the Word through the internet for the first time.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2015+Radio' },
+            { id: 8, year: '2018', title: { es: 'Programas de Discipulado Estructural', en: 'Structural Discipleship Programs' }, text: { es: 'Se implementa un currículo formal de discipulado para la formación de nuevos líderes.', en: 'A formal discipleship curriculum was implemented for the training of new leaders.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2018+Liderazgo' },
+            { id: 9, year: '2020', title: { es: 'Transición Digital (COVID)', en: 'Digital Transition (COVID)' }, text: { es: 'Durante la pandemia, la iglesia se adapta completamente al formato virtual, incluyendo Twitch.', en: 'During the pandemic, the church fully adapted to the virtual format, including Twitch.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2020+Digital' },
+            { id: 10, year: '2025', title: { es: 'Celebración de 40 Años y Visión Futura', en: '40th Anniversary Celebration and Future Vision' }, text: { es: 'Celebramos 40 años de ministerio y se lanza la visión para la siguiente década, enfocada en la juventud.', en: 'We celebrate 40 years of ministry and launch the vision for the next decade, focused on youth.' }, imageUrl: 'https://placehold.co/600x400/F27A3A/0d0d0d?text=2025+40Años' },
         ];
+        
+        // --- DATOS: Horarios de Culto (SIN CAMBIOS) ---
+        const SCHEDULE = [
+            { day: { es: 'Lunes', en: 'Monday' }, activity: { es: 'Culto', en: 'Service' }, time: '8:00 PM' },
+            { day: { es: 'Martes', en: 'Tuesday' }, activity: { es: 'Oración', en: 'Prayer' }, time: '8:00 PM' },
+            { day: { es: 'Miércoles', en: 'Wednesday' }, activity: { es: 'Clases de Discipulado', en: 'Discipleship Classes' }, time: '8:00 PM' },
+            { day: { es: 'Jueves', en: 'Thursday' }, activity: { es: 'Día de Oración', en: 'Day of Prayer' }, time: '8:00 PM' },
+            { day: { es: 'Viernes', en: 'Friday' }, activity: { es: 'Culto de Sociedades', en: 'Societies Service' }, time: '8:00 PM' },
+            { day: { es: 'Sábado', en: 'Saturday' }, activity: { es: 'Culto', en: 'Service' }, time: '8:00 PM' },
+            { day: { es: 'Domingo (Mañana)', en: 'Sunday (Morning)' }, activity: { es: 'Culto', en: 'Service' }, time: '9:00 AM - 11:00 AM' },
+            { day: { es: 'Domingo (Tarde)', en: 'Sunday (Afternoon)' }, activity: { es: 'Culto', en: 'Service' }, time: '12:00 PM' },
+        ];
+        
+        // --- DATOS: 20 Imágenes para el Carrusel Continuo (SIN CAMBIOS) ---
+        const CAROUSEL_IMAGES = [];
+        for (let i = 1; i <= 20; i++) {
+            CAROUSEL_IMAGES.push(`https://placehold.co/150x100/333333/F27A3A?text=Foto+${i}`);
+        }
 
 
-        // Diccionario para traducciones (Actualizado con la nueva sección)
+        // Diccionario para traducciones (Actualizado)
         const DICTIONARY = {
             'es': {
                 'ministries_title': 'Nuestros Ministerios',
                 'events_title': 'Próximos Eventos',
-                // Eliminado 'plan_title' y relacionados
                 'modal_title': 'Detalles del Ministerio',
                 'leader': 'Líder(es)',
                 'idCard': 'Cédula/ID de Referencia',
@@ -430,13 +478,16 @@
                 'date': 'Fecha',
                 'location': 'Lugar',
                 'close': 'Cerrar',
-                'history_button': 'Nuestra Historia', // Nuevo
-                'history_modal_title': 'Nuestra Historia de Fe' // Nuevo
+                'history_button': 'Nuestra Historia', 
+                'history_modal_title': 'Nuestra Historia de Fe',
+                'schedule_title': 'Horarios de Culto y Actividades', 
+                'schedule_message': '¡Te esperamos en la presencia de Dios! Trae a un amigo.',
+                'main_title': '<span class="hidden sm:inline">Radio Iglesia</span> Comunidad', 
+                'carousel_title': 'Momentos de Comunidad'
             },
             'en': {
                 'ministries_title': 'Our Ministries',
                 'events_title': 'Upcoming Events',
-                // Eliminado 'plan_title' y relacionados
                 'modal_title': 'Ministry Details',
                 'leader': 'Leader(s)',
                 'idCard': 'ID Card/Reference ID',
@@ -450,38 +501,24 @@
                 'date': 'Date',
                 'location': 'Location',
                 'close': 'Close',
-                'history_button': 'Our History', // Nuevo
-                'history_modal_title': 'Our History of Faith' // Nuevo
+                'history_button': 'Our History',
+                'history_modal_title': 'Our History of Faith',
+                'schedule_title': 'Service and Activity Schedule', 
+                'schedule_message': 'We await you in God\'s presence! Bring a friend.',
+                'main_title': '<span class="hidden sm:inline">Church Radio</span> Community', 
+                'carousel_title': 'Community Moments'
             }
         };
-
-        // --- FUNCIONES DE PERSISTENCIA (Firestore - Mantenidas, aunque la sección de plan ya no existe) ---
-        
-        // Mantengo estas funciones solo por si alguna otra parte del código las llama, pero ya no tienen uso en la UI
-        async function loadPersonalPlan() {
-             // Esta función ya no es necesaria en la UI
-             console.log("Personal Plan loading function disabled by user request (section removed).");
-             // Original: load plan content into textarea
-        }
-
-        async function savePersonalPlan(content) {
-            // Esta función ya no es necesaria en la UI
-            console.log("Personal Plan saving function disabled by user request (section removed).");
-            // Original: save plan content to firestore
-             return true; 
-        }
 
         // --- FUNCIONES DE RENDERIZADO Y LÓGICA DE UI ---
 
         // Expone la función al scope global para que los onclicks funcionen
         window.showMinistryDetail = showMinistryDetail; 
         window.showEventDetail = showEventDetail;
-        window.showHistoryModal = showHistoryModal; // Nuevo
+        window.showHistoryModal = showHistoryModal;
 
-        // (showMinistryDetail y showEventDetail sin modificaciones)
         /**
-         * Muestra el modal con los detalles del ministerio.
-         * @param {string} ministryId - El ID del ministerio a mostrar.
+         * Muestra el modal con los detalles del ministerio. (SIN CAMBIOS)
          */
         function showMinistryDetail(ministryId) {
             const ministry = MINISTRIES.find(m => m.id === ministryId);
@@ -527,8 +564,7 @@
         }
 
         /**
-         * Muestra el modal con los detalles del evento.
-         * @param {number} eventId - El ID del evento a mostrar.
+         * Muestra el modal con los detalles del evento. (SIN CAMBIOS)
          */
         function showEventDetail(eventId) {
             const event = EVENTS.find(e => e.id === eventId);
@@ -578,19 +614,17 @@
         }
 
         /**
-         * NUEVO: Muestra el modal de la Historia de la Iglesia.
+         * Muestra el modal de la Historia de la Iglesia. (MODIFICADA para re-renderizar)
          */
         function showHistoryModal() {
             const modal = document.getElementById('historyModal');
             const container = document.getElementById('historyTimeline');
             const titleElement = document.getElementById('history-modal-title');
             
-            // Renderizar la historia solo si es la primera vez (para no duplicar)
-            if (container.children.length <= 2) { // 2 es la línea y el indicador
-                renderHistoryTimeline();
-            }
+            // Llamar a renderHistoryTimeline para que cargue el idioma correcto y limpie contenido antiguo
+            renderHistoryTimeline();
 
-            // Asegurar que el título esté traducido si el idioma es inglés
+            // Asegurar que el título del modal esté traducido
             titleElement.textContent = DICTIONARY[currentLang].history_modal_title || DICTIONARY.es.history_modal_title;
 
             // Mostrar modal
@@ -604,34 +638,39 @@
         }
 
         /**
-         * NUEVO: Renderiza la línea de tiempo de la historia.
+         * Renderiza la línea de tiempo de la historia. (MODIFICADA para limpieza y traducción)
          */
         function renderHistoryTimeline() {
             const container = document.getElementById('historyTimeline');
             if (!container) return;
 
-            // Limpiar contenido dinámico, dejando la línea y el indicador
+            // Limpiar el contenido DENTRO del bucle, dejando la línea y el indicador (primeros 2 elementos)
+            const children = Array.from(container.children);
+            children.slice(2).forEach(child => child.remove());
+            
             let dynamicContent = '';
             
             CHURCH_HISTORY.forEach((item, index) => {
+                // FIX: Obtener el título y el texto traducidos basados en el idioma actual
+                const translatedTitle = item.title[currentLang] || item.title.es;
+                const translatedText = item.text[currentLang] || item.text.es;
+
                 // Alternar la posición del contenido a izquierda (par) o derecha (impar)
                 const isLeft = index % 2 === 0;
-                // AJUSTE CLAVE: Usar la columna 3 en móvil (col-start-3) para dejar espacio a la izquierda para la línea.
-                // En md (desktop), se alterna entre col-start-1 y col-start-8
                 const cardClasses = isLeft 
-                    ? 'col-span-10 col-start-3 text-left md:col-span-4 md:col-start-1 md:text-right' 
-                    : 'col-span-10 col-start-3 text-left md:col-span-4 md:col-start-8';
+                    ? 'md:col-span-4 md:col-start-1 text-right' 
+                    : 'md:col-span-4 md:col-start-8 text-left';
                 
                 // Las clases flex y margin son solo para móvil (centrado)
                 dynamicContent += `
                     <div id="history-item-${item.id}" class="timeline-item grid grid-cols-12 gap-4">
                         
-                        <div class="${cardClasses} relative">
+                        <div class="${cardClasses} col-span-12 relative">
                             <div class="timeline-content-card transition-all" data-year="${item.year}">
                                 <p class="text-xs font-light text-gray-500">${item.year}</p>
-                                <h4 class="text-xl font-bold light-glow-text mb-2">${item.title}</h4>
-                                <p class="text-sm text-gray-300 mb-4">${item.text}</p>
-                                <img src="${item.imageUrl}" alt="Evento: ${item.title}" 
+                                <h4 class="text-xl font-bold light-glow-text mb-2">${translatedTitle}</h4>
+                                <p class="text-sm text-gray-300 mb-4">${translatedText}</p>
+                                <img src="${item.imageUrl}" alt="Evento: ${translatedTitle}" 
                                      class="w-full h-40 object-cover rounded-lg accent-border border-2 mt-2 opacity-100"
                                      loading="lazy"
                                      onerror="this.onerror=null; this.src='https://placehold.co/600x400/1a1a1a/F27A3A?text=Foto+No+Disponible';"
@@ -639,7 +678,7 @@
                             </div>
                         </div>
 
-                        <div class="timeline-dot"></div> 
+                        <div class="timeline-dot hidden md:block"></div>
                     </div>
                 `;
             });
@@ -648,6 +687,8 @@
             container.insertAdjacentHTML('beforeend', dynamicContent);
 
             // Recopilar referencias para el observer
+            // Limpiar el array historyItems para no duplicar referencias al re-renderizar
+            historyItems.length = 0; 
             CHURCH_HISTORY.forEach(item => {
                 historyItems.push(document.getElementById(`history-item-${item.id}`));
             });
@@ -655,7 +696,7 @@
 
 
         /**
-         * NUEVO: Configura el Intersection Observer para el efecto de scroll spy.
+         * Configura el Intersection Observer para el efecto de scroll spy. (SIN CAMBIOS)
          */
         function setupHistoryObserver() {
             const container = document.getElementById('historyTimeline');
@@ -716,9 +757,70 @@
             items.forEach(item => observer.observe(item));
         }
 
+        /**
+         * Renderiza la sección de horarios de culto. (SIN CAMBIOS)
+         */
+        function renderSchedule() {
+            const container = document.getElementById('schedule-container');
+            const titleElement = document.getElementById('schedule-section-title');
+            const messageElement = document.getElementById('schedule-message');
+
+            if (!container || !titleElement || !messageElement) return;
+
+            const langDict = DICTIONARY[currentLang];
+            titleElement.textContent = langDict.schedule_title;
+            messageElement.textContent = langDict.schedule_message;
+
+            container.innerHTML = SCHEDULE.map(item => {
+                const translatedDay = item.day[currentLang] || item.day.es;
+                const translatedActivity = item.activity[currentLang] || item.activity.es;
+                
+                return `
+                    <div class="flex justify-between items-center p-3 bg-[#2a2a2a] rounded-lg border-l-4 accent-border transition duration-300 hover:bg-[#3a3a3a]">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="sun" class="w-6 h-6 light-glow-text ${translatedDay.includes('Domingo') ? '' : 'hidden'}"></i>
+                            <i data-lucide="moon" class="w-6 h-6 light-glow-text ${!translatedDay.includes('Domingo') ? '' : 'hidden'}"></i>
+                            <div>
+                                <p class="text-base font-semibold text-white">${translatedDay}</p>
+                                <p class="text-sm text-gray-400">${translatedActivity}</p>
+                            </div>
+                        </div>
+                        <span class="text-lg font-bold light-glow-text">${item.time}</span>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
 
         /**
-         * Renderiza las tarjetas de ministerios en la sección.
+         * Renderiza el carrusel de fotografías continuo. (SIN CAMBIOS)
+         */
+        function renderCarousel() {
+            const content1 = document.getElementById('marquee-content-1');
+            const content2 = document.getElementById('marquee-content-2');
+            
+            if (!content1 || !content2) return;
+
+            const imagesHtml = CAROUSEL_IMAGES.map(url => `
+                <img src="${url}" alt="Foto de la Iglesia" class="marquee-image" loading="lazy">
+            `).join('');
+
+            // Duplicar el contenido para lograr el efecto de loop continuo
+            content1.innerHTML = imagesHtml;
+            content2.innerHTML = imagesHtml;
+            
+            // Ajustar el contenedor para que el efecto funcione correctamente con el 200% de ancho
+            const container = document.getElementById('carousel-container');
+            if (container) {
+                 // Añadir margen negativo al segundo contenido para evitar espacios visibles
+                 content2.style.marginLeft = '-4px'; 
+            }
+        }
+
+
+        /**
+         * Renderiza las tarjetas de ministerios en la sección. (SIN CAMBIOS)
          */
         function renderMinistries() {
             const container = document.getElementById('ministries-container');
@@ -740,7 +842,7 @@
         }
 
         /**
-         * Renderiza la vista de calendario/eventos.
+         * Renderiza la vista de calendario/eventos. (SIN CAMBIOS)
          */
         function renderCalendar() {
             const container = document.getElementById('calendar-view');
@@ -754,11 +856,11 @@
                         onclick="showEventDetail(${event.id})" role="button" tabindex="0"
                         aria-label="${translatedTitle}">
                         <div class="flex-shrink-0 text-center">
-                            <i data-lucide="calendar" class="w-6 h-6 sm:w-8 sm:h-8 light-glow-text"></i>
+                            <i data-lucide="calendar" class="w-8 h-8 light-glow-text"></i>
                         </div>
                         <div>
-                            <p class="text-base sm:text-lg font-bold text-white">${translatedTitle}</p>
-                            <p class="text-xs text-gray-400">${event.date} - ${event.time}</p>
+                            <p class="text-lg font-bold text-white">${translatedTitle}</p>
+                            <p class="text-sm text-gray-400">${event.date} - ${event.time}</p>
                             <p class="text-xs text-gray-500">${event.location}</p>
                         </div>
                     </div>
@@ -769,7 +871,7 @@
         }
 
         /**
-         * Ajusta los textos de la UI según el idioma seleccionado.
+         * Ajusta los textos de la UI según el idioma seleccionado. (MODIFICADA para Historia)
          * @param {string} lang - 'es' o 'en'.
          */
         function setLanguage(lang) {
@@ -777,35 +879,46 @@
             const dict = DICTIONARY[lang];
 
             // 1. Traducción de títulos principales de la página
+            document.getElementById('header-title-text').innerHTML = dict.main_title; 
             document.querySelector('#twitch-section h2').innerHTML = `<i data-lucide="zap" class="inline-block mr-2 w-7 h-7"></i> ${dict.twitch_section_title}`;
             document.getElementById('twitch-note').textContent = dict.twitch_note;
             document.getElementById('ministries-section-title').textContent = dict.ministries_title;
             document.getElementById('calendar-section-title').textContent = dict.events_title;
             
-            // 2. Traducción del botón de historia
-            const historyButton = document.getElementById('show-history-button');
-            if (historyButton) {
-                // AJUSTE: Usar span.inline para que el texto se vea siempre en móvil
-                historyButton.innerHTML = `<i data-lucide="scroll" class="inline-block mr-1 w-4 h-4 md:mr-2 md:w-5 md:h-5"></i> <span class="inline">${dict.history_button}</span>`;
-                historyButton.setAttribute('title', dict.history_button);
+            // 2. Traducción del título del carrusel
+            const carouselTitle = document.getElementById('carousel-title');
+            if (carouselTitle) {
+                carouselTitle.textContent = dict.carousel_title;
             }
             
-            // 3. Traducción de los títulos de las redes sociales
+            // 3. Traducción del botón de historia y redes sociales
+            const historyButton = document.getElementById('show-history-button');
+            if (historyButton) {
+                historyButton.innerHTML = `<i data-lucide="scroll" class="inline-block mr-2 w-5 h-5"></i> <span class="hidden md:inline">${dict.history_button}</span>`;
+                historyButton.setAttribute('title', dict.history_button);
+            }
             document.getElementById('link-facebook').setAttribute('title', lang === 'es' ? 'Facebook' : 'Facebook');
             document.getElementById('link-instagram').setAttribute('title', lang === 'es' ? 'Instagram' : 'Instagram');
             document.getElementById('link-youtube').setAttribute('title', lang === 'es' ? 'YouTube' : 'YouTube');
             document.getElementById('link-twitch').setAttribute('title', lang === 'es' ? 'Twitch' : 'Twitch');
             document.getElementById('lang-toggle').setAttribute('title', lang === 'es' ? 'Cambiar Idioma' : 'Change Language');
             
-            // 4. Traducción del título del modal de historia (si está abierto o ya renderizado)
+            // 4. Traducción del título del modal de historia 
             const historyModalTitle = document.getElementById('history-modal-title');
             if (historyModalTitle) {
                  historyModalTitle.textContent = dict.history_modal_title || DICTIONARY.es.history_modal_title;
             }
             
-            // 5. Re-renderizar tarjetas para aplicar títulos traducidos
+            // 5. Re-renderizar secciones para aplicar títulos traducidos
             renderMinistries(); 
             renderCalendar();
+            renderSchedule(); 
+            
+            // FIX: Si el modal de historia está abierto, re-renderizar su contenido para traducir los textos de la historia.
+            const historyModal = document.getElementById('historyModal');
+            if (historyModal && !historyModal.classList.contains('hidden')) {
+                renderHistoryTimeline();
+            }
             
             // 6. Re-renderizar iconos (siempre necesario después de cambiar innerHTML)
             lucide.createIcons();
@@ -826,15 +939,14 @@
         // --- INICIALIZACIÓN DE LA PÁGINA ---
         window.onAuthReady = function() {
             // Cargar datos después de que la autenticación esté lista
-            // loadPersonalPlan(); // ELIMINADO
         };
 
         window.onload = function() {
             setLanguage(currentLang); // Set initial language (default is ES)
+            renderCarousel(); // Inicializar carrusel
             
             // Si la autenticación ya terminó antes de window.onload
             if (window.db && window.userId) {
-                // loadPersonalPlan(); // ELIMINADO
             }
         };
 
@@ -853,4 +965,3 @@
     </script>
 </body>
 </html>
-
